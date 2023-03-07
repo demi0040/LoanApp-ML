@@ -1,4 +1,4 @@
-from app import create_app
+from flaskloanapp import create_app
 
 app = create_app()
 
