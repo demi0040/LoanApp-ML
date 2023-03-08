@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for customer in customers.items %}
+    <div class="col-md-6 mx-auto">
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-2 text-center align-self-center">
+            <img src="{{ url_for('static', filename='profile_pics/' + customer.author.image_file) }}"
+              alt="{{ customer.author.username }}'s profile picture" class="rounded-circle mr-3" height="50">
+            <a href="{{ url_for('users.user_customers', username=customer.author.username) }}"
+              class="btn btn-sm btn-outline-primary ml-auto ">{{ customer.author.username }}</a>
+          </div>
+          <div class="col-md-10">
+            <div class="card">
+              <div class="card-header">
+                <div class="d-flex align-items-center">
+                  <h5 class="card-title">{{ customer.customer_name }}'s Applications</h5>
+                </div>
+              </div>
+              <div class="row g-0">
+                <div class="col">
+                  <div class="card-body">
+                    <p class="card-text">{{ customer.content }}</p>
+                    {% for app in ['insurance', 'mortgage', 'loan'] %}
+                    <div class="row border border-light-subtle">
+                        <div class="col-md-8 border border-light-subtle">An {{ app }} application</div>
+                        <div class="col-md-4 text-center border border-light-subtle {% if app == 'insurance' %}{% if customer.res_ins == 1 %}bg-info{% elif customer.res_ins == 0 %}bg-danger{% endif %}{% elif app == 'mortgage' %}{% if customer.res_mor == 1 %}bg-info{% elif customer.res_mor == 0 %}bg-danger{% endif %}{% else %}{% if customer.res_loan == 1 %}bg-info{% elif customer.res_loan == 0 %}bg-danger{% endif %}{% endif %}">
+                            {% if app == 'insurance' %}
+                                {% if customer.res_ins == 1 %}
+                                    Approved
+                                {% elif customer.res_ins == 0 %}
+                                    Denied
+                                {% else %}
+                                    Not Applied
+                                {% endif %}
+                            {% elif app == 'mortgage' %}
+                                {% if customer.res_mor == 1 %}
+                                    Approved
+                                {% elif customer.res_mor == 0 %}
+                                    Denied
+                                {% else %}
+                                    Not Applied
+                                {% endif %}
+                            {% else %}
+                                {% if customer.res_loan == 1 %}
+                                    Approved
+                                {% elif customer.res_loan == 0 %}
+                                    Denied
+                                {% else %}
+                                    Not Applied
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-between align-items-center">
+                <small class="text-muted">{{ customer.date_created.strftime('%Y-%m-%d') }}</small>
+                <a href="{{ url_for('customers.customer', customer_id=customer.id) }}"
+                  class="btn btn-sm btn-outline-warning">View Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          {% if customers.has_prev %}
+          <li class="page-item"><a class="page-link"
+              href="{{ url_for('main.home', page=customers.prev_num) }}">&laquo;</a></li>
+          {% else %}
+          <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+          {% endif %}
+          {% for page in customers.iter_pages(left_edge=1, left_current=1, right_current=2, right_edge=1) %}
+          {% if page %}
+          {% if customers.page == page %}
+          <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+          {% else %}
+          <li class="page-item"><a class="page-link" href="{{ url_for('main.home', page=page) }}">{{ page }}</a></li>
+          {% endif %}
+          {% else %}
+          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+          {% endif %}
+          {% endfor %}
+          {% if customers.has_next %}
+          <li class="page-item"><a class="page-link"
+              href="{{ url_for('main.home', page=customers.next_num) }}">&raquo;</a></li>
+          {% else %}
+          <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock %}

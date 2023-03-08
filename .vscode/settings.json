@@ -1,7 +1,17 @@
 {
     "cSpell.words": [
+        "backref",
+        "coapp",
+        "coapplicant",
         "flaskloanapp",
+        "itsdangerous",
+        "loanapp",
+        "matplotlib",
+        "mlpredict",
+        "pyplot",
         "sendinblue",
-        "sqlalchemy"
+        "sklearn",
+        "sqlalchemy",
+        "wtforms"
     ]
 }

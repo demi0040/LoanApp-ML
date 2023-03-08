@@ -1,4 +1,4 @@
-from flaskloanapp import create_app
+from loanapp_flask import create_app
 
 app = create_app()
 
