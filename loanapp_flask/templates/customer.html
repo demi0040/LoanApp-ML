@@ -20,40 +20,38 @@
             data-target="#deleteModal">Delete</button>
           <a class="btn btn-info btn-sm mt-1 mb-1"
             href="{{ url_for('customers.new_loan_application', customer_id=customer.id) }}">New Loan</a>
+          <a class="btn btn-info btn-sm mt-1 mb-1"
+            href="{{ url_for('customers.new_insurance_premium', customer_id=customer.id) }}">New Heath Insurance</a>
         </div>
         {% endif %}
       </div>
       <h2 class="article-title">{{ customer.customer_name }}</h2>
       <p class="article-content">{{ customer.content }}</p>
-      {% for app in ['insurance', 'mortgage', 'loan'] %}
+      {% for app in ['insurance', 'loan'] %}
       <div class="row border border-light-subtle">
         <div class="col-md-8 border border-light-subtle">An {{ app }} application</div>
         <div
-          class="col-md-4 text-center border border-light-subtle {% if app == 'insurance' %}{% if customer.res_ins == 1 %}bg-info{% elif customer.res_ins == 0 %}bg-danger{% endif %}{% elif app == 'mortgage' %}{% if customer.res_mor == 1 %}bg-info{% elif customer.res_mor == 0 %}bg-danger{% endif %}{% else %}{% if customer.res_loan == 1 %}bg-info{% elif customer.res_loan == 0 %}bg-danger{% endif %}{% endif %}">
+          class="col-md-4 text-center border border-light-subtle {% if app == 'insurance' %}{% if customer.res_ins != 2 %}bg-info{% elif customer.res_ins == 0 %}bg-danger{% endif %}{% else %}{% if customer.res_loan == 1 %}bg-info{% elif customer.res_loan == 0 %}bg-danger{% endif %}{% endif %}">
           {% if app == 'insurance' %}
-          {% if customer.res_ins == 1 %}
-          Approved
-          {% elif customer.res_ins == 0 %}
-          Denied
+            {% if customer.res_ins == 2 %}
+              Not Applied
+            {% else %}
+                <span id="price"></span>
+
+                <script>
+                  const price = {{ customer.res_ins|tojson }};
+                  const formattedPrice = price.toLocaleString('en-CA', { style: 'currency', currency: 'CAD' });
+                  document.getElementById('price').textContent = formattedPrice;
+                </script>
+            {% endif %}
           {% else %}
-          Not Applied
-          {% endif %}
-          {% elif app == 'mortgage' %}
-          {% if customer.res_mor == 1 %}
-          Approved
-          {% elif customer.res_mor == 0 %}
-          Denied
-          {% else %}
-          Not Applied
-          {% endif %}
-          {% else %}
-          {% if customer.res_loan == 1 %}
-          Approved
-          {% elif customer.res_loan == 0 %}
-          Denied
-          {% else %}
-          Not Applied
-          {% endif %}
+            {% if customer.res_loan == 1 %}
+              Approved
+            {% elif customer.res_loan == 0 %}
+              Denied
+            {% else %}
+              Not Applied
+            {% endif %}
           {% endif %}
         </div>
       </div>

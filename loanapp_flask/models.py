@@ -41,11 +41,11 @@ class Customer(db.Model):
     customer_name = db.Column(db.String(100), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
-    res_ins = db.Column(db.Integer, default=2)
-    res_mor = db.Column(db.Integer, default=2)
+    res_ins = db.Column(db.Float, default=2)
     res_loan = db.Column(db.Integer, default=2)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     applications = db.relationship('LoanApplication', backref='customer', lazy=True)
+    ins_prem = db.relationship('InsurancePremium', backref='customer', lazy=True)
 
     def __repr__(self):
         return f"Customer('{self.customer_name}', '{self.date_created}')"
@@ -68,3 +68,16 @@ class LoanApplication(db.Model):
 
     def __repr__(self):
         return f"LoanApplication('{self.gender}', '{self.married}', '{self.dependents}', '{self.education}', '{self.self_employment}', '{self.applicant_income}', '{self.coapplicant_income}'), '{self.loan_amount}', '{self.loan_term}', '{self.credit_history}', '{self.prop_area}'"
+    
+class InsurancePremium(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    gender = db.Column(db.Boolean, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    bmi = db.Column(db.Float, nullable=False)
+    children = db.Column(db.Integer, nullable=False)
+    smoker = db.Column(db.Boolean, nullable=False)
+
+    def __repr__(self):
+        return f"LoanApplication('{self.gender}', '{self.age}', '{self.bmi}', '{self.children}', '{self.smoker}'"

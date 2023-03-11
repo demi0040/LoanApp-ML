@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, IntegerField, RadioField
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField, RadioField, FloatField
 from wtforms.validators import DataRequired
 
 class CustomerForm(FlaskForm):
@@ -19,4 +19,12 @@ class LoanApplicationForm(FlaskForm):
     loan_term = IntegerField('Loan Term', validators=[DataRequired()])
     credit_history = RadioField('Credit History', choices=[(0, '0'), (1, '1')], coerce=bool)
     prop_area = RadioField('Property Area', choices=[(0, 'Rural'), (1, 'Semiurban'), (2, 'Urban')])
+    submit = SubmitField('Create')
+
+class InsurancePremiumForm(FlaskForm):
+    gender = RadioField('Gender', choices=[(0, 'Male'), (1, 'Female')], validators=[DataRequired()], coerce=bool)
+    smoker = RadioField('Married', choices=[(0, 'No'), (1, 'Yes')], validators=[DataRequired()], coerce=bool)
+    age = IntegerField('Age', validators=[DataRequired()])
+    children = IntegerField('Age', validators=[DataRequired()])
+    bmi = FloatField('BMI', validators=[DataRequired()])
     submit = SubmitField('Create')
