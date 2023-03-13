@@ -1,4 +1,5 @@
 import pickle
+import locale
 import numpy as np
 from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint)
@@ -8,6 +9,12 @@ from loanapp_flask.models import Customer, LoanApplication, InsurancePremium
 from loanapp_flask.customers.forms import CustomerForm, LoanApplicationForm, InsurancePremiumForm
 
 customers = Blueprint('customers', __name__)
+
+@customers.app_template_filter('curr_form')
+def curr_form(val):
+    val = float(val)
+    locale.setlocale(locale.LC_MONETARY, 'en_CA.utf8')
+    return locale.currency(val, symbol=True)
 
 @customers.route("/customer/new", methods=['GET', 'POST'])
 @login_required
@@ -159,3 +166,4 @@ def new_insurance_premium(customer_id):
         return redirect(url_for('main.home'))
     return render_template('create_insurance_premium.html', title='New Insurance Premium',
                            form=form, legend='New Insurance Premium')
+

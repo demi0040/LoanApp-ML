@@ -32,13 +32,8 @@
                                 {% if customer.res_ins == 2 %}
                                     Not Applied
                                 {% else %}
-                                    <span id="price"></span>
-                    
-                                    <script>
-                                      const price = {{ customer.res_ins|tojson }};
-                                      const formattedPrice = price.toLocaleString('en-CA', { style: 'currency', currency: 'CAD' });
-                                      document.getElementById('price').textContent = formattedPrice;
-                                    </script>
+                                {{ customer.res_ins | curr_form }}
+                                    
                                 {% endif %}
                             {% else %}
                                 {% if customer.res_loan == 1 %}
